@@ -41,6 +41,17 @@
 #include <vector>
 #include <random>
 
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+// #ifndef STB_IMAGE_WRITE_IMPLEMENTATION
+// #define STBI_MSC_SECURE_CRT
+// http://blawat2015.no-ip.com/~mieki256/diary/202207.html
+#define STB_IMAGE_WRITE_STATIC
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+// #endif
+
 struct vec3
 {
     float x{ 0 }, y{ 0 }, z{ 0 };
@@ -281,6 +292,14 @@ int main()
     ofs << "P6\n" << width << " " <<  height << "\n255\n";
     ofs.write(reinterpret_cast<const char*>(buffer.get()), width * height * 3);
     ofs.close();
+
+    	// // stbi
+	// stbi_write_png("output.png", width, height, channels, data, width * channels);
+	const int channels=3;// rgba
+    const char *path = "./image.png";
+	printf("write image: %s\n", path);
+	stbi_write_png(path, width, height, channels, buffer.get(), width * channels);
+
 
     return 0;
 }
